@@ -1,9 +1,9 @@
-package org.pathwayloom.wpsparql;
+package org.pathwayloom.utils;
 
 public class TargetInteraction {
-	String targetURI;	
-	String targetLabel;
-	String targetType;
+	public String targetURI;	
+	public String targetLabel;
+	public String targetType;
 	
 	public TargetInteraction(String targetURI, String targetLabel,
 			String targetType) {

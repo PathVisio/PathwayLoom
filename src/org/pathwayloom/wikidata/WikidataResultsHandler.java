@@ -1,38 +1,21 @@
-package org.pathwayloom.wpsparql;
+package org.pathwayloom.wikidata;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bridgedb.DataSource;
 import org.pathvisio.core.model.ObjectType;
 import org.pathvisio.core.model.PathwayElement;
 import org.pathwayloom.PppPlugin;
+import org.pathwayloom.utils.AbstractResultHandler;
+import org.pathwayloom.utils.InteractionBinaryResults;
+import org.pathwayloom.utils.SourceInteraction;
+import org.pathwayloom.utils.TargetInteraction;
 
-public class InteractionResultsHandler {
-
-	Map<InteractionBinaryResults,InteractionBinaryResults> setResults;
-
-	public InteractionResultsHandler(){
-		this.setResults = new HashMap<InteractionBinaryResults,InteractionBinaryResults>();
-	}
-
-	public void add(InteractionBinaryResults i, SourceInteraction s, TargetInteraction t ){		
-		if (setResults.get(i)==null){
-			setResults.put(i,i);
-			setResults.get(i).getSetSource().add(s);
-			setResults.get(i).getSetTarget().add(t);
-		}
-		else{
-			setResults.get(i).getSetSource().add(s);
-			setResults.get(i).getSetTarget().add(t);		
-		}
-	}
+public class WikidataResultsHandler extends AbstractResultHandler {
 
 	public List<PathwayElement> getBinaryResults(){
 		List<PathwayElement> spokes = new ArrayList<PathwayElement>();
-
 		for ( InteractionBinaryResults interaction : setResults.keySet()){
 			if ( interaction.getSetSource().size()==1 && interaction.getSetTarget().size()==1){
 				PathwayElement pchildElt = PathwayElement.createPathwayElement(ObjectType.DATANODE);
@@ -51,15 +34,11 @@ public class InteractionResultsHandler {
 
 				pchildElt.addComment(sourceLabel, "Source");
 				pchildElt.addComment(targetLabel, "Target");
-
+				
 				if ( !sourceURI.equals(interaction.inputURI.toString())){
 					pchildElt.setTextLabel(sourceLabel);
-					String xref = sourceURI;
-					String dsResult = xref.substring(0, xref.lastIndexOf("/"));
-
-					String id = xref.substring(xref.lastIndexOf("/")+1);
-					pchildElt.setDataSource(DataSource.getByIdentiferOrgBase(dsResult));
-					pchildElt.setElementID(id);
+					pchildElt.setDataSource(DataSource.getExistingBySystemCode("L"));
+					pchildElt.setElementID(sourceURI);
 					String dnType = sourceInteraction.sourceType;
 					dnType = dnType.substring(dnType.lastIndexOf("#")+1);
 					pchildElt.setDataNodeType(dnType);
@@ -67,12 +46,8 @@ public class InteractionResultsHandler {
 				}
 				else if ( !targetURI.equals(interaction.inputURI.toString())){
 					pchildElt.setTextLabel(targetLabel);
-					String xref = targetURI;
-					String dsResult = xref.substring(0, xref.lastIndexOf("/"));
-
-					String id = xref.substring(xref.lastIndexOf("/")+1);
-					pchildElt.setDataSource(DataSource.getByIdentiferOrgBase(dsResult));
-					pchildElt.setElementID(id);
+					pchildElt.setDataSource(DataSource.getExistingBySystemCode("L"));
+					pchildElt.setElementID(targetURI);
 					String dnType = targetInteraction.targetType;
 					dnType = dnType.substring(dnType.lastIndexOf("#")+1);
 					pchildElt.setDataNodeType(dnType);	

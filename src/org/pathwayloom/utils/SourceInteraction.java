@@ -1,9 +1,9 @@
-package org.pathwayloom.wpsparql;
+package org.pathwayloom.utils;
 
 public class SourceInteraction {
-	String sourceURI;	
-	String sourceLabel;
-	String sourceType;
+	public String sourceURI;	
+	public String sourceLabel;
+	public String sourceType;
 	
 	public SourceInteraction(String sourceURI, String sourceLabel,
 			String sourceType) {

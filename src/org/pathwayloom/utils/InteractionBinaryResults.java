@@ -1,15 +1,15 @@
-package org.pathwayloom.wpsparql;
+package org.pathwayloom.utils;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class InteractionBinaryResults  {
 
-	String inputURI;	
-	String typeInt;	
-	String pathwayID;
-	String interactionID;	
-	String parentGraphId;
+	public String inputURI;	
+	public String typeInt;	
+	public String pathwayID;
+	public String interactionID;	
+	public String parentGraphId;
 	
 	Set<SourceInteraction> setSource = new HashSet<SourceInteraction>();
 	Set<TargetInteraction> setTarget = new HashSet<TargetInteraction>();

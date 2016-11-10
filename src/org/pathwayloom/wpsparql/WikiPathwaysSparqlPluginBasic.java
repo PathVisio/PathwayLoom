@@ -9,6 +9,9 @@ import org.pathvisio.core.model.Pathway;
 import org.pathvisio.core.model.PathwayElement;
 import org.pathwayloom.PathwayBuilder;
 import org.pathwayloom.PppPlugin;
+import org.pathwayloom.utils.InteractionBinaryResults;
+import org.pathwayloom.utils.SourceInteraction;
+import org.pathwayloom.utils.TargetInteraction;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -90,7 +93,7 @@ public class WikiPathwaysSparqlPluginBasic extends WikiPathwaysSparqlPlugin {
 		QueryExecution queryExecution = QueryExecutionFactory.sparqlService(endpoint, query);
 		ResultSet resultSet = queryExecution.execSelect();
 		
-		InteractionResultsHandler interactionResultsHandler = new InteractionResultsHandler();
+		WikiPathwaysResultHandler interactionResultsHandler = new WikiPathwaysResultHandler();
 
 		while (resultSet.hasNext()) {
 			QuerySolution solution = resultSet.next();

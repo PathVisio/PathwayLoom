@@ -45,6 +45,7 @@ import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.desktop.plugin.Plugin;
 import org.pathvisio.gui.PathwayElementMenuListener.PathwayElementMenuHook;
 import org.pathvisio.gui.ProgressDialog;
+import org.pathwayloom.wikidata.WikidataSparqlPlugin;
 import org.pathwayloom.wpsparql.WikiPathwaysSparqlPluginAdvanced;
 import org.pathwayloom.wpsparql.WikiPathwaysSparqlPluginBasic;
 
@@ -62,6 +63,7 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 	private PppPane pane;
 	private SuggestionAction sparqlLoomWpSparqlBasic;
 	private SuggestionAction sparqlLoomWpSparqlAdvanced;
+	private SuggestionAction sparqlLoomWdSparqlBasic;;
 	
 	/**
 	 * return the existing PppPane
@@ -90,6 +92,8 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 				(this, "Sparql Basic", new WikiPathwaysSparqlPluginBasic(gdbManager));
 		sparqlLoomWpSparqlAdvanced = new SuggestionAction
 				(this, "Sparql Advanced Beta", new WikiPathwaysSparqlPluginAdvanced(gdbManager));
+		sparqlLoomWdSparqlBasic = new SuggestionAction
+		(this, "Wikidata Sparql Basic", new WikidataSparqlPlugin(gdbManager));
 	}
 
 	public void done() {
@@ -205,9 +209,11 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					titleMenu.setForeground(Color.gray);
 
 					sparqlLoomWpSparqlBasic.setElement((GeneProduct) e);
-					sparqlLoomWpSparqlAdvanced.setElement((GeneProduct) e);
+					sparqlLoomWpSparqlAdvanced.setElement((GeneProduct) e);					
+					sparqlLoomWdSparqlBasic.setElement((GeneProduct) e);
 					submenu.add(sparqlLoomWpSparqlBasic);
 					submenu.add(sparqlLoomWpSparqlAdvanced);
+					submenu.add(sparqlLoomWdSparqlBasic);
 					menu.add(submenu);
 					
 				}
