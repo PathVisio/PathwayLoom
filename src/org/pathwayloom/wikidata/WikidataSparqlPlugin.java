@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.bridgedb.DataSource;
 import org.bridgedb.IDMapperException;
 import org.bridgedb.Xref;
@@ -49,9 +51,15 @@ public class WikidataSparqlPlugin  extends SuggestionAdapter {
 					mapID(xref,DataSource.getExistingBySystemCode("L"));
 			if (!setRef.isEmpty())
 				inputID = setRef.iterator().next().getId();
-		} catch (IDMapperException e) {
+		}catch (NullPointerException e){
+			JOptionPane.showMessageDialog(null,
+					"Import a gene mapping database may improve your result");
+		}catch (IDMapperException e){
+			JOptionPane.showMessageDialog(null,
+					"Import a gene mapping database may improve your result");
 			e.printStackTrace();
 		}
+		
 		
 		PathwayElement pelt = PathwayElement.createPathwayElement(ObjectType.DATANODE);
 		pelt.setMWidth (PppPlugin.DATANODE_MWIDTH);
