@@ -102,7 +102,7 @@ public class WikidataSparqlPlugin  extends SuggestionAdapter {
 		
 		WikidataResultsHandler interactionResultsHandler = new WikidataResultsHandler();
 		
-		String type = "Association";
+		String type = "GeneProduct";
 		while (resultSet.hasNext()) {
 			QuerySolution solution = resultSet.next();
 
@@ -113,7 +113,7 @@ public class WikidataSparqlPlugin  extends SuggestionAdapter {
 			TargetInteraction targetInteraction = new TargetInteraction(targetURI,targetLabel,type);
 			
 			InteractionBinaryResults interactionBinaryResults = new InteractionBinaryResults(
-					inputID,"Association","NA",inputID+targetURI,pelt.getGraphId());			
+					inputID,"Disease association","NA",inputID+targetURI,pelt.getGraphId());			
 			
 			interactionResultsHandler.add(interactionBinaryResults, sourceInteraction, targetInteraction);
 		}

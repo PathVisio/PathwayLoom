@@ -45,6 +45,8 @@ import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.desktop.plugin.Plugin;
 import org.pathvisio.gui.PathwayElementMenuListener.PathwayElementMenuHook;
 import org.pathvisio.gui.ProgressDialog;
+import org.pathwayloom.uniprot.UniprotEnzymeSparqlPlugin;
+import org.pathwayloom.uniprot.UniprotProteinSparqlPlugin;
 import org.pathwayloom.wikidata.WikidataSparqlPlugin;
 import org.pathwayloom.wpsparql.WikiPathwaysSparqlPluginAdvanced;
 import org.pathwayloom.wpsparql.WikiPathwaysSparqlPluginBasic;
@@ -63,7 +65,9 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 	private PppPane pane;
 	private SuggestionAction sparqlLoomWpSparqlBasic;
 	private SuggestionAction sparqlLoomWpSparqlAdvanced;
-	private SuggestionAction sparqlLoomWdSparqlBasic;;
+	private SuggestionAction sparqlLoomWdSparqlBasic;
+	private SuggestionAction sparqlLoomUpSparqlProtein;
+	private SuggestionAction sparqlLoomUpSparqlEnzyme;
 	
 	/**
 	 * return the existing PppPane
@@ -93,7 +97,11 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 		sparqlLoomWpSparqlAdvanced = new SuggestionAction
 				(this, "Sparql Advanced Beta", new WikiPathwaysSparqlPluginAdvanced(gdbManager));
 		sparqlLoomWdSparqlBasic = new SuggestionAction
-		(this, "Wikidata Sparql Basic", new WikidataSparqlPlugin(gdbManager));
+		(this, "Disease association", new WikidataSparqlPlugin(gdbManager));
+		sparqlLoomUpSparqlProtein = new SuggestionAction
+				(this, "Protein-Protein interaction", new UniprotProteinSparqlPlugin(gdbManager));
+		sparqlLoomUpSparqlEnzyme= new SuggestionAction
+				(this, "Protein-Enzyme interaction", new UniprotEnzymeSparqlPlugin(gdbManager));
 	}
 
 	public void done() {
@@ -207,13 +215,28 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					titleMenu.setFont(new Font("sansserif", Font.BOLD, 16));
 					titleMenu.setBackground(Color.white);
 					titleMenu.setForeground(Color.gray);
-
+					
+					JMenu wpSubmenu = new JMenu("WikiPathways Sparql");
+					JMenu upSubmenu = new JMenu("Uniprot Sparql");
+					JMenu wdSubmenu = new JMenu("Wikidata Sparql ");
+					
 					sparqlLoomWpSparqlBasic.setElement((GeneProduct) e);
 					sparqlLoomWpSparqlAdvanced.setElement((GeneProduct) e);					
 					sparqlLoomWdSparqlBasic.setElement((GeneProduct) e);
-					submenu.add(sparqlLoomWpSparqlBasic);
-					submenu.add(sparqlLoomWpSparqlAdvanced);
-					submenu.add(sparqlLoomWdSparqlBasic);
+					sparqlLoomUpSparqlProtein.setElement((GeneProduct) e);
+					sparqlLoomUpSparqlEnzyme.setElement((GeneProduct) e);
+					
+					wpSubmenu.add(sparqlLoomWpSparqlBasic);
+					wpSubmenu.add(sparqlLoomWpSparqlAdvanced);
+					submenu.add(wpSubmenu);
+					
+					wdSubmenu.add(sparqlLoomWdSparqlBasic);
+					submenu.add(wdSubmenu);
+					
+					upSubmenu.add(sparqlLoomUpSparqlProtein);
+					upSubmenu.add(sparqlLoomUpSparqlEnzyme);
+					submenu.add(upSubmenu);
+					
 					menu.add(submenu);
 					
 				}

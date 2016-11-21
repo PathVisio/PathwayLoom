@@ -46,6 +46,9 @@ public class PathwayBuilder
 			if (selectedDataNodeType.equals("GeneProduct")){
 				pchildElt.setDataNodeType(DataNodeType.GENEPRODUCT);
 			}
+			if (selectedDataNodeType.equals("Protein")){
+				pchildElt.setDataNodeType(DataNodeType.PROTEIN);
+			}
             PathwayElement connectElement = PathwayElement.createPathwayElement(ObjectType.LINE);
 	    	connectElement.setMStartX(HUB_X);
 	    	connectElement.setMStartY(HUB_Y);

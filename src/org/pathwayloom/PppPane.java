@@ -169,6 +169,9 @@ public class PppPane extends JPanel
 					if (selectedDataNodeType.equals("GeneProduct")){
 						pel.setDataNodeType(DataNodeType.GENEPRODUCT);
 					}
+					if (selectedDataNodeType.equals("Protein")){
+						pel.setDataNodeType(DataNodeType.PROTEIN);
+					}
 					pel.setMCenterX(engine.getActivePathway().getElementById(parentGraphId).getMCenterX()+165);
 					pel.setMCenterY(engine.getActivePathway().getElementById(parentGraphId).getMCenterY());
 					pel.setMHeight(20);
