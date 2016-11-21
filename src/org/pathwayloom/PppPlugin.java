@@ -45,6 +45,7 @@ import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.desktop.plugin.Plugin;
 import org.pathvisio.gui.PathwayElementMenuListener.PathwayElementMenuHook;
 import org.pathvisio.gui.ProgressDialog;
+import org.pathwayloom.uniprot.UniprotEnzymeProteinSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotEnzymeSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotProteinSparqlPlugin;
 import org.pathwayloom.wikidata.WikidataSparqlPlugin;
@@ -68,6 +69,7 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 	private SuggestionAction sparqlLoomWdSparqlBasic;
 	private SuggestionAction sparqlLoomUpSparqlProtein;
 	private SuggestionAction sparqlLoomUpSparqlEnzyme;
+	private SuggestionAction sparqlLoomUpSparqlEnzymeProtein;
 	
 	/**
 	 * return the existing PppPane
@@ -100,8 +102,10 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 		(this, "Disease association", new WikidataSparqlPlugin(gdbManager));
 		sparqlLoomUpSparqlProtein = new SuggestionAction
 				(this, "Protein-Protein interaction", new UniprotProteinSparqlPlugin(gdbManager));
-		sparqlLoomUpSparqlEnzyme= new SuggestionAction
+		sparqlLoomUpSparqlEnzyme = new SuggestionAction
 				(this, "Protein-Enzyme interaction", new UniprotEnzymeSparqlPlugin(gdbManager));
+		sparqlLoomUpSparqlEnzymeProtein = new SuggestionAction
+				(this, "Enzyme-Protein interaction", new UniprotEnzymeProteinSparqlPlugin(gdbManager));
 	}
 
 	public void done() {
@@ -225,6 +229,7 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					sparqlLoomWdSparqlBasic.setElement((GeneProduct) e);
 					sparqlLoomUpSparqlProtein.setElement((GeneProduct) e);
 					sparqlLoomUpSparqlEnzyme.setElement((GeneProduct) e);
+					sparqlLoomUpSparqlEnzymeProtein.setElement((GeneProduct) e);
 					
 					wpSubmenu.add(sparqlLoomWpSparqlBasic);
 					wpSubmenu.add(sparqlLoomWpSparqlAdvanced);
@@ -235,6 +240,7 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					
 					upSubmenu.add(sparqlLoomUpSparqlProtein);
 					upSubmenu.add(sparqlLoomUpSparqlEnzyme);
+					upSubmenu.add(sparqlLoomUpSparqlEnzymeProtein);
 					submenu.add(upSubmenu);
 					
 					menu.add(submenu);
