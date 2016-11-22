@@ -53,10 +53,13 @@ import javax.swing.table.DefaultTableModel;
 import org.bridgedb.DataSource;
 import org.bridgedb.Xref;
 import org.pathvisio.core.Engine;
+import org.pathvisio.core.model.ConnectorType;
 import org.pathvisio.core.model.DataNodeType;
+import org.pathvisio.core.model.LineType;
 import org.pathvisio.core.model.ObjectType;
 import org.pathvisio.core.model.Pathway;
 import org.pathvisio.core.model.PathwayElement;
+import org.pathvisio.core.view.MIMShapes;
 import org.pathvisio.core.view.VPathway;
 import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.gui.view.VPathwaySwing;
@@ -187,6 +190,9 @@ public class PppPane extends JPanel
 					connectElement.getMEnd().linkTo(engine.getActivePathway().getElementById(parentGraphId), -1, 0);
 					connectElement.setStartGraphRef(parentGraphId);
 					connectElement.setEndGraphRef(pel.getGraphId());
+			    	connectElement.setStartLineType(LineType.LINE);
+			    	connectElement.setEndLineType(MIMShapes.MIM_CONVERSION);
+			    	connectElement.setConnectorType(ConnectorType.STRAIGHT);
 					
 					engine.getActivePathway().add(connectElement);
 				}
