@@ -45,10 +45,12 @@ public class UniprotProteinSparqlPlugin extends SuggestionAdapter {
 		inputLabel = input.getTextLabel();
 		Xref xref = new Xref(inputID, dataSource);
 		try {
-			Set<Xref> setRef  = gdbManager.getGeneDb().
-					mapID(xref,DataSource.getExistingBySystemCode("S"));
-			if (!setRef.isEmpty())
-				inputID = setRef.iterator().next().getId();
+			if ( !dataSource.getSystemCode().equals("S") ){
+				Set<Xref> setRef  = gdbManager.getGeneDb().
+						mapID(xref,DataSource.getExistingBySystemCode("S"));
+				if (!setRef.isEmpty())
+					inputID = setRef.iterator().next().getId();
+			}			
 		}catch (NullPointerException e){
 			JOptionPane.showMessageDialog(null,
 					"Import a gene mapping database may improve your result");
@@ -110,7 +112,7 @@ public class UniprotProteinSparqlPlugin extends SuggestionAdapter {
 			TargetInteraction targetInteraction = new TargetInteraction(targetURI,targetLabel,type);
 			
 			InteractionBinaryResults interactionBinaryResults = new InteractionBinaryResults(
-					inputID,"Protein-Protein Interaction","NA",inputID+targetURI,pelt.getGraphId());			
+					inputID,"Protein-Protein Interaction","",inputID+targetURI,pelt.getGraphId());			
 			
 			interactionResultsHandler.add(interactionBinaryResults, sourceInteraction, targetInteraction);
 		}
