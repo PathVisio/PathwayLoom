@@ -95,9 +95,9 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 		// register right click actions
 		GdbManager gdbManager = desktop.getSwingEngine().getGdbManager();
 		sparqlLoomWpSparqlBasic = new SuggestionAction
-				(this, "Sparql Basic", new WikiPathwaysSparqlPluginBasic(gdbManager));
+				(this, "Only binary interactions", new WikiPathwaysSparqlPluginBasic(gdbManager));
 		sparqlLoomWpSparqlAdvanced = new SuggestionAction
-				(this, "Sparql Advanced Beta", new WikiPathwaysSparqlPluginAdvanced(gdbManager));
+				(this, "All interactions", new WikiPathwaysSparqlPluginAdvanced(gdbManager));
 		sparqlLoomWdSparqlBasic = new SuggestionAction
 		(this, "Disease association", new WikidataSparqlPlugin(gdbManager));
 		sparqlLoomUpSparqlProtein = new SuggestionAction
@@ -220,9 +220,9 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					titleMenu.setBackground(Color.white);
 					titleMenu.setForeground(Color.gray);
 					
-					JMenu wpSubmenu = new JMenu("WikiPathways Sparql");
-					JMenu upSubmenu = new JMenu("Uniprot Sparql");
-					JMenu wdSubmenu = new JMenu("Wikidata Sparql ");
+					JMenu wpSubmenu = new JMenu("WikiPathways");
+					JMenu upSubmenu = new JMenu("Uniprot");
+					JMenu wdSubmenu = new JMenu("Wikidata");
 					
 					sparqlLoomWpSparqlBasic.setElement((GeneProduct) e);
 					sparqlLoomWpSparqlAdvanced.setElement((GeneProduct) e);					
