@@ -27,7 +27,7 @@ public class WikiPathwaysSparqlPluginAdvanced extends WikiPathwaysSparqlPlugin {
 		super(gdbManager);
 	}
 	
-	@Override public Pathway doSuggestion(PathwayElement input) throws SuggestionException{		
+	@Override public PathwayBuilder doSuggestion(PathwayElement input) throws SuggestionException{		
 		dataSource = input.getDataSource();
 		inputID = input.getElementID();
 		
@@ -144,7 +144,7 @@ public class WikiPathwaysSparqlPluginAdvanced extends WikiPathwaysSparqlPlugin {
 			pchildElt.addComment("False", "Input");
 			spokes.add (pchildElt);
 		}
-		Pathway result = PathwayBuilder.radialLayout(pelt, spokes);
+		PathwayBuilder result = PathwayBuilder.radialLayout(pelt, spokes);
 		return result;
 	}
 }

@@ -13,6 +13,13 @@ public class PathwayBuilder
     private static final double HUB_X = 270;
     private static final double HUB_Y = 270;
     private static final double RADIUS = 170;	
+    
+    private PathwayElement input;
+    private Pathway result;
+    
+//    public PathwayBuilder(){
+//    	
+//    }
 	
     /**
      * creates a network with radial layout of a hub surrounded
@@ -20,16 +27,21 @@ public class PathwayBuilder
      * 
      * The arguments should not be part of a Pathway yet.
      */
-	public static Pathway radialLayout (PathwayElement hub, List<PathwayElement> spokes)
+	public static PathwayBuilder radialLayout (PathwayElement hub, List<PathwayElement> spokes)
 	{
-	    Pathway result = new Pathway();
-
+	    Pathway result = new Pathway();	    
+	    PathwayBuilder pb = new PathwayBuilder();
+	    pb.setInput(hub);
+	    
         int noRecords = spokes.size();
         double angle = 0;
 		double incrementStep = (2* Math.PI)/noRecords;
 
 		hub.setMCenterX(HUB_X);
 	    hub.setMCenterY(HUB_Y);
+	    if (hub.getDataNodeType().equals("Metabolite")){
+	    	hub.setColor(Color.BLUE);
+		}
         result.add (hub);
         hub.setGeneratedGraphId();
         
@@ -63,7 +75,25 @@ public class PathwayBuilder
 		    connectElement.setEndGraphRef(pchildElt.getGraphId());
 	    	angle += incrementStep;
         }
-		return result;		
+		
+		pb.setResult(result);
+		return pb;		
+	}
+
+	public PathwayElement getInput() {
+		return input;
+	}
+
+	public void setInput(PathwayElement input) {
+		this.input = input;
+	}
+
+	public Pathway getResult() {
+		return result;
+	}
+
+	public void setResult(Pathway result) {
+		this.result = result;
 	}
 	
 }

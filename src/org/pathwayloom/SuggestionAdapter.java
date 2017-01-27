@@ -32,12 +32,12 @@ public class SuggestionAdapter implements Suggestion
 		return true;
 	}
 
-	public Pathway doSuggestion(PathwayElement input)
+	public PathwayBuilder doSuggestion(PathwayElement input)
 			throws SuggestionException 
 	{
 		PathwayElement hub = input.copy();
 		
-		Pathway result = PathwayBuilder.radialLayout(hub, new ArrayList<PathwayElement>());
+		PathwayBuilder result = PathwayBuilder.radialLayout(hub, new ArrayList<PathwayElement>());
 		return result;
 	}
 

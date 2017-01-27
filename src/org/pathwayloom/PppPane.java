@@ -59,8 +59,15 @@ import org.pathvisio.core.model.LineType;
 import org.pathvisio.core.model.ObjectType;
 import org.pathvisio.core.model.Pathway;
 import org.pathvisio.core.model.PathwayElement;
+import org.pathvisio.core.view.Graphics;
 import org.pathvisio.core.view.MIMShapes;
+import org.pathvisio.core.view.SelectionBox;
+import org.pathvisio.core.view.VElementMouseEvent;
+import org.pathvisio.core.view.VElementMouseListener;
 import org.pathvisio.core.view.VPathway;
+import org.pathvisio.core.view.VPathwayElement;
+import org.pathvisio.core.view.VPathwayEvent;
+import org.pathvisio.core.view.VPathwayListener;
 import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.gui.view.VPathwaySwing;
 
@@ -96,17 +103,18 @@ public class PppPane extends JPanel
 	/**
 	 * Add a new Pathway part to the panel, with the given description displayed above it.
 	 */
-	public void addPart(String desc, Pathway part)
+	public void addPart(String desc, PathwayBuilder pb)
 	{
 		elementMap = new HashMap<String,PathwayElement>();
 		panel.removeAll();
-
+		Pathway part = pb.getResult();
+		final PathwayElement input = pb.getInput();
 		panel.add (new JLabel(desc));
 		JScrollPane scroller =  
 			new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroller.setMinimumSize(new Dimension(150, 150));
 		VPathwaySwing wrapper = new VPathwaySwing(scroller);
-		VPathway vPwy = wrapper.createVPathway();
+		final VPathway vPwy = wrapper.createVPathway();
 		vPwy.setEditMode(false);
 		vPwy.fromModel(part);
 		vPwy.setPctZoom(66.7);
@@ -114,7 +122,43 @@ public class PppPane extends JPanel
 		CopyAction a = new CopyAction(vPwy);
 		wrapper.registerKeyboardAction((KeyStroke)a.getValue(Action.ACCELERATOR_KEY), a);
 		scroller.add(wrapper);
-
+//		wrapper.addm
+//		vPwy.addVElementMouseListener(new VElementMouseListener() {
+//			
+//			@Override
+//			public void vElementMouseEvent(VElementMouseEvent e) {
+//				// TODO Auto-generated method stub
+//				Set<VPathwayElement> selec = vPwy.getSelectedPathwayElements();
+//				VPathwayElement vEl = selec.iterator().next();
+//				vEl.
+//			}
+//		});
+//		vPwy.add
+		wrapper.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){	
+				if (e.getClickCount() == 2){					
+					Engine engine = desktop.getSwingEngine().getEngine(); 					
+					String  parentGraphId = input.findComment("ParentGraphId");
+					
+					List<Graphics> sel = vPwy.getSelectedGraphics();
+					PathwayElement pel = sel.get(0).getPathwayElement().copy();
+					pel.setMCenterX(engine.getActivePathway().getElementById(parentGraphId).getMCenterX()+165);
+					pel.setMCenterY(engine.getActivePathway().getElementById(parentGraphId).getMCenterY());					
+					engine.getActivePathway().add(pel);					
+					
+					PathwayElement connectElement = PathwayElement.createPathwayElement(ObjectType.LINE);
+					connectElement.getMStart().linkTo(pel, 1, 0);
+					connectElement.getMEnd().linkTo(engine.getActivePathway().getElementById(parentGraphId), -1, 0);
+					connectElement.setStartGraphRef(parentGraphId);
+					connectElement.setEndGraphRef(pel.getGraphId());
+			    	connectElement.setStartLineType(LineType.LINE);
+			    	connectElement.setEndLineType(MIMShapes.MIM_CONVERSION);
+			    	connectElement.setConnectorType(ConnectorType.STRAIGHT);
+					engine.getActivePathway().add(connectElement);
+				}			
+			}
+			
+		});
 		panel.add (scroller);
 
 		List<Xref> xrefs = part.getDataNodeXrefs();
@@ -141,48 +185,49 @@ public class PppPane extends JPanel
 				String selectedTarget = (String) model.getValueAt(selectedRow, 1);				
 				PathwayElement pwElement = elementMap.get(selectedSource+selectedTarget);
 				
-				String selectedLabel = pwElement.getTextLabel();
-				String selectedDataSource = pwElement.getDataSource().getFullName();
-				String selectedIdentifier = pwElement.getElementID();
-				String selectedDataNodeType = pwElement.getDataNodeType();
+//				String selectedLabel = pwElement.getTextLabel();
+//				String selectedDataSource = pwElement.getDataSource().getFullName();
+//				String selectedIdentifier = pwElement.getElementID();
+//				String selectedDataNodeType = pwElement.getDataNodeType();
 				String parentGraphId = pwElement.findComment("ParentGraphId");
 				
 				Engine engine = desktop.getSwingEngine().getEngine(); 
-				String inputEntity = engine.getActivePathway().getElementById(parentGraphId).getTextLabel();
-
-				if (SwingUtilities.isRightMouseButton(e)){
-					final JComponent[] inputs = new JComponent[] {
-							new JLabel(inputEntity),
-							new JLabel("Label: "+selectedLabel),
-							new JLabel("Datasource: "+selectedDataSource),
-							new JLabel("Identifier: "+selectedIdentifier),
-							new JLabel("Authority: "+selectedIdentifier),
-					};
-					JOptionPane.showMessageDialog(null,inputs,"TITLE",JOptionPane.INFORMATION_MESSAGE);
-				}
+//				String inputEntity = engine.getActivePathway().getElementById(parentGraphId).getTextLabel();
+//
+//				if (SwingUtilities.isRightMouseButton(e)){
+//					final JComponent[] inputs = new JComponent[] {
+//							new JLabel(inputEntity),
+//							new JLabel("Label: "+selectedLabel),
+//							new JLabel("Datasource: "+selectedDataSource),
+//							new JLabel("Identifier: "+selectedIdentifier),
+//							new JLabel("Authority: "+selectedIdentifier),
+//					};
+//					JOptionPane.showMessageDialog(null,inputs,"TITLE",JOptionPane.INFORMATION_MESSAGE);
+//				}
 				if (e.getClickCount() == 2){
-					PathwayElement pel = PathwayElement.createPathwayElement(ObjectType.DATANODE);
-					if (selectedDataNodeType.equals("Unkown")){
-						pel.setDataNodeType(DataNodeType.UNKOWN);
-					}
-					if (selectedDataNodeType.equals("Metabolite")){
-						pel.setDataNodeType(DataNodeType.METABOLITE);
-						pel.setColor(Color.BLUE);
-					}
-					if (selectedDataNodeType.equals("GeneProduct")){
-						pel.setDataNodeType(DataNodeType.GENEPRODUCT);
-					}
-					if (selectedDataNodeType.equals("Protein")){
-						pel.setDataNodeType(DataNodeType.PROTEIN);
-					}
+//					PathwayElement pel = PathwayElement.createPathwayElement(ObjectType.DATANODE);
+					PathwayElement pel = pwElement.copy();
+//					if (selectedDataNodeType.equals("Unkown")){
+//						pel.setDataNodeType(DataNodeType.UNKOWN);
+//					}
+//					if (pel.getDataNodeType().equals(DataNodeType.METABOLITE)){
+//						pel.setDataNodeType(DataNodeType.METABOLITE);
+//						pel.setColor(Color.BLUE);
+//					}
+//					if (selectedDataNodeType.equals("GeneProduct")){
+//						pel.setDataNodeType(DataNodeType.GENEPRODUCT);
+//					}
+//					if (selectedDataNodeType.equals("Protein")){
+//						pel.setDataNodeType(DataNodeType.PROTEIN);
+//					}
 					pel.setMCenterX(engine.getActivePathway().getElementById(parentGraphId).getMCenterX()+165);
 					pel.setMCenterY(engine.getActivePathway().getElementById(parentGraphId).getMCenterY());
 					pel.setMHeight(20);
 					pel.setMWidth(80);
-					pel.setTextLabel(selectedLabel.replace("@en", ""));
-					pel.setElementID(selectedIdentifier);
+//					pel.setTextLabel(selectedLabel.replace("@en", ""));
+//					pel.setElementID(selectedIdentifier);
 					pel.setGraphId(engine.getActivePathway().getUniqueGraphId());
-					pel.setDataSource(DataSource.getExistingByFullName(selectedDataSource));
+//					pel.setDataSource(DataSource.getExistingByFullName(selectedDataSource));
 					engine.getActivePathway().add(pel);
 
 					PathwayElement connectElement = PathwayElement.createPathwayElement(ObjectType.LINE);

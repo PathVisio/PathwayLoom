@@ -34,7 +34,7 @@ public interface Suggestion
 		}
 	}
 	
-	public Pathway doSuggestion(PathwayElement input) throws SuggestionException;
+	public PathwayBuilder doSuggestion(PathwayElement input) throws SuggestionException;
 	
 	public boolean canSuggest(PathwayElement input);
 }

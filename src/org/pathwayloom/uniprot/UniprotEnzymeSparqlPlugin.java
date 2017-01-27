@@ -39,7 +39,7 @@ public class UniprotEnzymeSparqlPlugin extends SuggestionAdapter {
 		this.gdbManager = gdbManager;
 	}
 	
-	@Override public Pathway doSuggestion(PathwayElement input) throws SuggestionException  {
+	@Override public PathwayBuilder doSuggestion(PathwayElement input) throws SuggestionException  {
 
 		dataSource = input.getDataSource();
 		inputID = input.getElementID();
@@ -69,7 +69,7 @@ public class UniprotEnzymeSparqlPlugin extends SuggestionAdapter {
 		else{
 			JOptionPane.showMessageDialog(null,
 					"Please define the pathway organism","Organism Error", JOptionPane.ERROR_MESSAGE);
-			return new Pathway();
+			return new PathwayBuilder();
 		}
 		
 		PathwayElement pelt = PathwayElement.createPathwayElement(ObjectType.DATANODE);
@@ -123,7 +123,7 @@ public class UniprotEnzymeSparqlPlugin extends SuggestionAdapter {
 			interactionResultsHandler.add(interactionBinaryResults, sourceInteraction, targetInteraction);
 		}
 		spokes = interactionResultsHandler.getBinaryResults();
-		Pathway result = PathwayBuilder.radialLayout(pelt, spokes);
+		PathwayBuilder result = PathwayBuilder.radialLayout(pelt, spokes);
 		return result;
 	}
 }

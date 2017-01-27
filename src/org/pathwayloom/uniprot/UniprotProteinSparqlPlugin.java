@@ -38,7 +38,7 @@ public class UniprotProteinSparqlPlugin extends SuggestionAdapter {
 		this.gdbManager = gdbManager;
 	}
 	
-	@Override public Pathway doSuggestion(PathwayElement input) throws SuggestionException  {
+	@Override public PathwayBuilder doSuggestion(PathwayElement input) throws SuggestionException  {
 
 		dataSource = input.getDataSource();
 		inputID = input.getElementID();
@@ -117,7 +117,7 @@ public class UniprotProteinSparqlPlugin extends SuggestionAdapter {
 			interactionResultsHandler.add(interactionBinaryResults, sourceInteraction, targetInteraction);
 		}
 		spokes = interactionResultsHandler.getBinaryResults();
-		Pathway result = PathwayBuilder.radialLayout(pelt, spokes);
+		PathwayBuilder result = PathwayBuilder.radialLayout(pelt, spokes);
 		return result;
 	}
 }
