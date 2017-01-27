@@ -45,6 +45,8 @@ import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.desktop.plugin.Plugin;
 import org.pathvisio.gui.PathwayElementMenuListener.PathwayElementMenuHook;
 import org.pathvisio.gui.ProgressDialog;
+import org.pathwayloom.chembl.ChEMBLCompoundSpaqrlPlugin;
+import org.pathwayloom.chembl.ChEMBLProteinSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotEnzymeProteinSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotEnzymeSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotProteinSparqlPlugin;
@@ -70,6 +72,8 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 	private SuggestionAction sparqlLoomUpSparqlProtein;
 	private SuggestionAction sparqlLoomUpSparqlEnzyme;
 	private SuggestionAction sparqlLoomUpSparqlEnzymeProtein;
+	private SuggestionAction sparqlLoomChSparqlProtein;
+	private SuggestionAction sparqlLoomChSparqlCompound;
 	
 	/**
 	 * return the existing PppPane
@@ -106,6 +110,10 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 				(this, "Protein-Enzyme interaction", new UniprotEnzymeSparqlPlugin(gdbManager));
 		sparqlLoomUpSparqlEnzymeProtein = new SuggestionAction
 				(this, "Enzyme-Protein interaction", new UniprotEnzymeProteinSparqlPlugin(gdbManager));
+		sparqlLoomChSparqlProtein = new SuggestionAction
+				(this, "Protein-Compounds interaction", new ChEMBLProteinSparqlPlugin(gdbManager));
+		sparqlLoomChSparqlCompound = new SuggestionAction
+				(this, "Compound-Targets interaction", new ChEMBLCompoundSpaqrlPlugin(gdbManager));
 	}
 
 	public void done() {
@@ -158,11 +166,11 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 			final ProgressDialog pd = new ProgressDialog(desktop.getFrame(), "Querying " +  name, pk, true, true);
 			pk.setTaskName("Running query");
 
-			SwingWorker<Pathway, Void> worker = new SwingWorker<Pathway, Void>(){
+			SwingWorker<PathwayBuilder, Void> worker = new SwingWorker<PathwayBuilder, Void>(){
 
 				@Override
-				protected Pathway doInBackground() throws Exception {
-					Pathway result = suggestion.doSuggestion(elt.getPathwayElement());
+				protected PathwayBuilder doInBackground() throws Exception {
+					PathwayBuilder result = suggestion.doSuggestion(elt.getPathwayElement());
 					return result;
 				}
 
@@ -223,6 +231,7 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					JMenu wpSubmenu = new JMenu("WikiPathways");
 					JMenu upSubmenu = new JMenu("Uniprot");
 					JMenu wdSubmenu = new JMenu("Wikidata");
+					JMenu chSubmenu = new JMenu("ChEMBL");
 					
 					sparqlLoomWpSparqlBasic.setElement((GeneProduct) e);
 					sparqlLoomWpSparqlAdvanced.setElement((GeneProduct) e);					
@@ -230,6 +239,8 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					sparqlLoomUpSparqlProtein.setElement((GeneProduct) e);
 					sparqlLoomUpSparqlEnzyme.setElement((GeneProduct) e);
 					sparqlLoomUpSparqlEnzymeProtein.setElement((GeneProduct) e);
+					sparqlLoomChSparqlProtein.setElement((GeneProduct) e);
+					sparqlLoomChSparqlCompound.setElement((GeneProduct) e);
 					
 					wpSubmenu.add(sparqlLoomWpSparqlBasic);
 					wpSubmenu.add(sparqlLoomWpSparqlAdvanced);
@@ -242,6 +253,10 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					upSubmenu.add(sparqlLoomUpSparqlEnzyme);
 					upSubmenu.add(sparqlLoomUpSparqlEnzymeProtein);
 					submenu.add(upSubmenu);
+					
+					chSubmenu.add(sparqlLoomChSparqlProtein);
+					chSubmenu.add(sparqlLoomChSparqlCompound);
+					submenu.add(chSubmenu);
 					
 					menu.add(submenu);
 					
