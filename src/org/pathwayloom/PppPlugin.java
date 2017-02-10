@@ -31,7 +31,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 import org.pathvisio.core.data.GdbManager;
 import org.pathvisio.core.debug.Logger;
 import org.pathvisio.core.model.ConverterException;
