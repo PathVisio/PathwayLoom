@@ -109,8 +109,8 @@ public class WikidataSparqlPlugin  extends SuggestionAdapter {
 			QuerySolution solution = resultSet.next();
 
 			String targetURI = solution.get("suggested_entrezid").toString();
-
 			String targetLabel = solution.get("suggested_geneLabel").asLiteral().getLexicalForm();
+			
 			SourceInteraction sourceInteraction = new SourceInteraction(inputID,inputLabel,type);
 			TargetInteraction targetInteraction = new TargetInteraction(targetURI,targetLabel,type);
 			

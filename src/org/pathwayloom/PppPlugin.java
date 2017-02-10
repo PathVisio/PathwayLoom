@@ -29,7 +29,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.jdom.JDOMException;
 import org.pathvisio.core.data.GdbManager;
 import org.pathvisio.core.debug.Logger;
 import org.pathvisio.core.model.ConverterException;
@@ -50,9 +52,11 @@ import org.pathwayloom.chembl.ChEMBLProteinSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotEnzymeProteinSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotEnzymeSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotProteinSparqlPlugin;
+import org.pathwayloom.utils.SparqlQueryParser;
 import org.pathwayloom.wikidata.WikidataSparqlPlugin;
 import org.pathwayloom.wpsparql.WikiPathwaysSparqlPluginAdvanced;
 import org.pathwayloom.wpsparql.WikiPathwaysSparqlPluginBasic;
+import org.xml.sax.SAXException;
 
 /**
  * PathwayLoom plugin - 
@@ -87,6 +91,15 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 	 */
 	public void init(PvDesktop desktop)  {
 		this.desktop = desktop;
+		
+		//Parse github queries
+		try {
+			SparqlQueryParser.init();
+		} catch (ParserConfigurationException | SAXException | IOException
+				| JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// create new PppPane and add it to the side bar.
 		pane = new PppPane(desktop);

@@ -41,7 +41,6 @@ public class SparqlQueryParser {
 
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		String url = "https://raw.githubusercontent.com/andrawaag/pathway_interaction_models/master/models.xml";
-//		String url = "/home/bigcat-jonathan/BiGCaT/pathway_interaction_models/models.xml";
 		SAXBuilder saxBuilder = new SAXBuilder();
 
 		doc= saxBuilder.build(url);
@@ -62,41 +61,10 @@ public class SparqlQueryParser {
 				String interaction_types  = interaction.getName();
 				String source = dataSources.getName();
 				String data_types = interaction.getChild("DATATYPES").getText();
-
-				//				queriesList.add(new SparqlQuery(source, endpoint, query, data_types, interaction_types));
-
 				queriesMap.put(interaction_types, 
 						new SparqlQuery(source, endpoint, query, data_types, interaction_types));
-//				System.out.println(interaction_types);
-//				System.out.println(source);
-				//				System.out.println(interaction.getChild("SPARQL").getText());
-				//				System.out.println(interaction.getChild("query").getText());
-
 			}
 		}
-		/*
-//		System.out.println();
-		for (int i=0; i < nodes.getLength(); i++ ){
-			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE) {
-				System.out.println(nodes.item(i).getNodeName());
-
-				NodeList sourcesNodes = nodes.item(i).getChildNodes();
-
-				for (int j=0; j < sourcesNodes.getLength() ; j++ ){
-//					sourcesNodes.item(j);					
-					if (sourcesNodes.item(j).getNodeType() == Node.ELEMENT_NODE) {
-						System.out.println(sourcesNodes.item(j).getNodeName());
-						sourcesNodes.item(j).get
-					}
-				}
-
-				//			System.out.println(nodes.item(i).getLocalName());
-				//			System.out.println(nodes.item(i).getNodeValue());
-
-
-
-			}
-		}*/
 	}
 
 	public static Map<String, SparqlQuery> getQueries(){

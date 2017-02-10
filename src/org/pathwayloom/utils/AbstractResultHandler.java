@@ -1,9 +1,12 @@
 package org.pathwayloom.utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class AbstractResultHandler {
+import org.pathvisio.core.model.PathwayElement;
+
+public class AbstractResultHandler implements ResultHandler {
 	protected Map<InteractionBinaryResults,InteractionBinaryResults> setResults;
 
 	public AbstractResultHandler(){
@@ -20,5 +23,10 @@ public class AbstractResultHandler {
 			setResults.get(i).getSetSource().add(s);
 			setResults.get(i).getSetTarget().add(t);		
 		}
+	}
+
+	@Override
+	public List<PathwayElement> getBinaryResults() {
+		return null;
 	}
 }
