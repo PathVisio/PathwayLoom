@@ -14,7 +14,7 @@ import org.pathwayloom.utils.SourceInteraction;
 import org.pathwayloom.utils.TargetInteraction;
 
 public class UniprotResultsHandler extends AbstractResultHandler {
-
+	@Override
 	public List<PathwayElement> getBinaryResults(){
 		List<PathwayElement> spokes = new ArrayList<PathwayElement>();
 		for ( InteractionBinaryResults interaction : setResults.keySet()){
