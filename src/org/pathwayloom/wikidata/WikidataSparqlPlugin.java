@@ -18,6 +18,8 @@ import org.pathvisio.core.model.PathwayElement;
 import org.pathwayloom.PathwayBuilder;
 import org.pathwayloom.PppPlugin;
 import org.pathwayloom.SuggestionAdapter;
+import org.pathwayloom.Suggestion.SuggestionException;
+import org.pathwayloom.uniprot.UniprotResultsHandler;
 import org.pathwayloom.utils.InteractionBinaryResults;
 import org.pathwayloom.utils.SourceInteraction;
 import org.pathwayloom.utils.TargetInteraction;
@@ -30,17 +32,40 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 
 public class WikidataSparqlPlugin  extends SuggestionAdapter {
-	private GdbManager gdbManager;
-	protected DataSource dataSource;
-	protected String inputID;
-	protected String inputLabel;
+	static final String queryNodeID = "Disease_association.sparql";	
 	
-	public WikidataSparqlPlugin(GdbManager gdbManager)
-	{
+	public WikidataSparqlPlugin(GdbManager gdbManager){
 		this.gdbManager = gdbManager;
+		this.sparqlQueryNode = map.get(queryNodeID);
+		this.menu_label = sparqlQueryNode.getMenu_label();
+
+		this.idParameter = "suggested_entrezid";
+		this.labelParameter = "suggested_geneLabel";
+		this.typeInteraction = "Disease association";
+		this.typeDataNode = "GeneProduct";
+		this.systemCode = "L";
+		this.interactionResultsHandler = new WikidataResultsHandler();
 	}
 	
-	@Override public PathwayBuilder doSuggestion(PathwayElement input) throws SuggestionException  {
+	@Override 
+	public PathwayBuilder doSuggestion(PathwayElement input) throws SuggestionException  {
+
+		this.dataSource = input.getDataSource();
+		this.inputID = input.getElementID();
+		this.inputLabel = input.getTextLabel();
+		this.interactionResultsHandler.clear();
+		
+		mapping(systemCode);
+	
+		PathwayElement pelt = createPathwayElement(input);
+		List<PathwayElement> spokes = doQuery(pelt.getGraphId());	
+
+		PathwayBuilder result = PathwayBuilder.radialLayout(pelt, spokes);
+		return result;
+	}
+	/*
+	@Override 
+	public PathwayBuilder doSuggestion(PathwayElement input) throws SuggestionException  {
 
 		dataSource = input.getDataSource();
 		inputID = input.getElementID();
@@ -122,5 +147,5 @@ public class WikidataSparqlPlugin  extends SuggestionAdapter {
 		spokes = interactionResultsHandler.getBinaryResults();
 		PathwayBuilder result = PathwayBuilder.radialLayout(pelt, spokes);
 		return result;
-	}
+	}*/
 }
