@@ -12,9 +12,9 @@ import org.pathwayloom.SuggestionAdapter;
 
 public abstract class WikiPathwaysSparqlPlugin extends SuggestionAdapter {
 	
-	private GdbManager gdbManager;
-	protected DataSource dataSource;
-	protected String inputID;
+//	protected GdbManager gdbManager;
+//	protected DataSource dataSource;
+//	protected String inputID;
 	public WikiPathwaysSparqlPlugin(GdbManager gdbManager)
 	{
 		this.gdbManager = gdbManager;
