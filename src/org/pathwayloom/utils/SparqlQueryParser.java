@@ -27,7 +27,8 @@ public class SparqlQueryParser {
 
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		String url = "https://raw.githubusercontent.com/andrawaag/pathway_interaction_models/master/models.xml";
-		url = "/home/bigcat-jonathan/BiGCaT/pathway_interaction_models/models.xml";
+//		String url = "/home/bigcat-jonathan/BiGCaT/pathway_interaction_models/models.xml";
+//		String url = "/home/bigcat-jonathan/BiGCaT/pathway_interaction_models/mo";
 		SAXBuilder saxBuilder = new SAXBuilder();
 
 		doc= saxBuilder.build(url);
