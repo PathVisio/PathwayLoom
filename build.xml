@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="org.pathvisio.pathwayloom" default="jar" basedir=".">
 
-  <property name="pathvisio.dir" value="../../../trunk"/>
+  <property name="pathvisio.dir" value="/home/bigcat-jonathan/BiGCaT/Pathvisio/trunk/"/>
 	<property name="jar.name" value="org.pathvisio.pathwayloom.jar"/>
   <property name="lib.dir"     value="lib"/>
 	<import file="${pathvisio.dir}/plugin-common.xml" />
