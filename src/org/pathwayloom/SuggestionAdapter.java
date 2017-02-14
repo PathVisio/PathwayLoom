@@ -68,39 +68,41 @@ public class SuggestionAdapter implements Suggestion
 	protected String typeInteraction;
 	protected String typeDataNode;
 	protected String systemCode;
+	protected String menu_label;
 	protected ResultHandler interactionResultsHandler;
 	
 	public boolean canSuggest(PathwayElement input) 
 	{
 		return true;
 	}
-//	@Override 
-//	public PathwayBuilder doSuggestion(PathwayElement input) throws SuggestionException  {
-//
-//		this.dataSource = input.getDataSource();
-//		this.inputID = input.getElementID();
-//		this.inputLabel = input.getTextLabel();
-//		
-//		mapping(systemCode);
-//		updateTaxon(input);
-//		if (this.taxon==null){
-//			getOrganismError();
-//			return new PathwayBuilder();
-//		}		
-//		PathwayElement pelt = createPathwayElement(input);
-//		List<PathwayElement> spokes = doQuery(pelt.getGraphId());	
-//
-//		PathwayBuilder result = PathwayBuilder.radialLayout(pelt, spokes);
-//		return result;
-//	}
-	public PathwayBuilder doSuggestion(PathwayElement input)
-			throws SuggestionException 
-	{
-		PathwayElement hub = input.copy();
+	@Override 
+	public PathwayBuilder doSuggestion(PathwayElement input) throws SuggestionException  {
+
+		this.dataSource = input.getDataSource();
+		this.inputID = input.getElementID();
+		this.inputLabel = input.getTextLabel();
+		this.interactionResultsHandler.clear();
 		
-		PathwayBuilder result = PathwayBuilder.radialLayout(hub, new ArrayList<PathwayElement>());
+		mapping(systemCode);
+		updateTaxon(input);
+		if (this.taxon==null){
+			getOrganismError();
+			return new PathwayBuilder();
+		}		
+		PathwayElement pelt = createPathwayElement(input);
+		List<PathwayElement> spokes = doQuery(pelt.getGraphId());	
+
+		PathwayBuilder result = PathwayBuilder.radialLayout(pelt, spokes);
 		return result;
 	}
+//	public PathwayBuilder doSuggestion(PathwayElement input)
+//			throws SuggestionException 
+//	{
+//		PathwayElement hub = input.copy();
+//		
+//		PathwayBuilder result = PathwayBuilder.radialLayout(hub, new ArrayList<PathwayElement>());
+//		return result;
+//	}
 	
 	public void mapping(String systemCode){
 		Xref xref = new Xref(inputID, dataSource);
@@ -150,14 +152,13 @@ public class SuggestionAdapter implements Suggestion
 		pelt.setGraphId(input.getGraphId());
 		pelt.addComment(pelt.getGraphId(), "ParentGraphId");
 		pelt.addComment("True", "Input");		
-		
-		pelt.setDataSource(dataSource);
-		pelt.setElementID(inputID);
+
+		pelt.setDataSource(input.getDataSource());
+		pelt.setElementID(input.getElementID());
 		return pelt;
 	}
 	
 	public List<PathwayElement> doQuery(String graphId){
-		
 		String endpoint = sparqlQueryNode.getEndpoint().trim();
 		String sparqlQuery = sparqlQueryNode.getQuery();
 
@@ -183,6 +184,9 @@ public class SuggestionAdapter implements Suggestion
 		}
 		List<PathwayElement> spokes = interactionResultsHandler.getBinaryResults();
 		return spokes;
+	}
+	public String getMenu_label() {
+		return menu_label;
 	}
 	
 }

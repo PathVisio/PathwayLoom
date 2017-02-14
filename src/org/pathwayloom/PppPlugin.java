@@ -53,6 +53,9 @@ import org.pathwayloom.uniprot.UniprotEnzymeProteinSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotEnzymeSparqlPlugin;
 import org.pathwayloom.uniprot.UniprotProteinSparqlPlugin;
 import org.pathwayloom.utils.SparqlQueryParser;
+import org.pathwayloom.wikidata.WikidataCompoundSparqlPlugin;
+import org.pathwayloom.wikidata.WikidataEncodedBySparqlPlugin;
+import org.pathwayloom.wikidata.WikidataEncodesSparqlPlugin;
 import org.pathwayloom.wikidata.WikidataSparqlPlugin;
 import org.pathwayloom.wpsparql.WikiPathwaysSparqlPluginAdvanced;
 import org.pathwayloom.wpsparql.WikiPathwaysSparqlPluginBasic;
@@ -73,6 +76,9 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 	private SuggestionAction sparqlLoomWpSparqlBasic;
 	private SuggestionAction sparqlLoomWpSparqlAdvanced;
 	private SuggestionAction sparqlLoomWdSparqlBasic;
+	private SuggestionAction sparqlLoomWdSparqlEncodedby;
+	private SuggestionAction sparqlLoomWdSparqlEncodes;
+	private SuggestionAction sparqlLoomWdSparqlCompound;
 	private SuggestionAction sparqlLoomUpSparqlProtein;
 	private SuggestionAction sparqlLoomUpSparqlEnzyme;
 	private SuggestionAction sparqlLoomUpSparqlEnzymeProtein;
@@ -111,22 +117,39 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 		
 		// register right click actions
 		GdbManager gdbManager = desktop.getSwingEngine().getGdbManager();
-		sparqlLoomWpSparqlBasic = new SuggestionAction
-				(this, "Only binary interactions", new WikiPathwaysSparqlPluginBasic(gdbManager));
-		sparqlLoomWpSparqlAdvanced = new SuggestionAction
-				(this, "All interactions", new WikiPathwaysSparqlPluginAdvanced(gdbManager));
-		sparqlLoomWdSparqlBasic = new SuggestionAction
-		(this, "Disease association", new WikidataSparqlPlugin(gdbManager));
-		sparqlLoomUpSparqlProtein = new SuggestionAction
-				(this, "Protein-Protein interaction", new UniprotProteinSparqlPlugin(gdbManager));
-		sparqlLoomUpSparqlEnzyme = new SuggestionAction
-				(this, "Protein-Enzyme interaction", new UniprotEnzymeSparqlPlugin(gdbManager));
-		sparqlLoomUpSparqlEnzymeProtein = new SuggestionAction
-				(this, "Enzyme-Protein interaction", new UniprotEnzymeProteinSparqlPlugin(gdbManager));
-		sparqlLoomChSparqlProtein = new SuggestionAction
-				(this, "Protein-Compounds interaction", new ChEMBLProteinSparqlPlugin(gdbManager));
-		sparqlLoomChSparqlCompound = new SuggestionAction
-				(this, "Compound-Targets interaction", new ChEMBLCompoundSpaqrlPlugin(gdbManager));
+		
+		WikiPathwaysSparqlPluginBasic wpb = new WikiPathwaysSparqlPluginBasic(gdbManager);
+		sparqlLoomWpSparqlBasic = new SuggestionAction(this, "Only binary interactions",wpb);
+		
+		WikiPathwaysSparqlPluginAdvanced wpa = new WikiPathwaysSparqlPluginAdvanced(gdbManager);
+		sparqlLoomWpSparqlAdvanced = new SuggestionAction(this, "All interactions", wpa);		
+		
+		WikidataSparqlPlugin wd  = new WikidataSparqlPlugin(gdbManager);
+		sparqlLoomWdSparqlBasic = new SuggestionAction(this, wd.getMenu_label(), wd);
+		
+		WikidataEncodedBySparqlPlugin web = new WikidataEncodedBySparqlPlugin(gdbManager);
+		sparqlLoomWdSparqlEncodedby = new SuggestionAction(this, web.getMenu_label(), web);
+		
+		WikidataEncodesSparqlPlugin we = new WikidataEncodesSparqlPlugin(gdbManager);		
+		sparqlLoomWdSparqlEncodes = new SuggestionAction(this, we.getMenu_label(), we);
+		
+		WikidataCompoundSparqlPlugin wc = new WikidataCompoundSparqlPlugin(gdbManager);		
+		sparqlLoomWdSparqlCompound = new SuggestionAction(this, wc.getMenu_label(), wc);
+		
+		UniprotProteinSparqlPlugin up = new UniprotProteinSparqlPlugin(gdbManager);
+		sparqlLoomUpSparqlProtein = new SuggestionAction(this, up.getMenu_label(), up);
+		
+		UniprotEnzymeSparqlPlugin ue = new UniprotEnzymeSparqlPlugin(gdbManager);
+		sparqlLoomUpSparqlEnzyme = new SuggestionAction(this, ue.getMenu_label(), ue);
+		
+		UniprotEnzymeProteinSparqlPlugin uep = new UniprotEnzymeProteinSparqlPlugin(gdbManager);
+		sparqlLoomUpSparqlEnzymeProtein = new SuggestionAction(this, uep.getMenu_label(), uep);
+		
+		ChEMBLProteinSparqlPlugin cp = new ChEMBLProteinSparqlPlugin(gdbManager);
+		sparqlLoomChSparqlProtein = new SuggestionAction(this, cp.getMenu_label(), cp);
+		
+		ChEMBLCompoundSpaqrlPlugin cc = new ChEMBLCompoundSpaqrlPlugin(gdbManager);
+		sparqlLoomChSparqlCompound = new SuggestionAction(this, cc.getMenu_label(), cc);
 	}
 
 	public void done() {
@@ -249,6 +272,9 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					sparqlLoomWpSparqlBasic.setElement((GeneProduct) e);
 					sparqlLoomWpSparqlAdvanced.setElement((GeneProduct) e);					
 					sparqlLoomWdSparqlBasic.setElement((GeneProduct) e);
+					sparqlLoomWdSparqlEncodedby.setElement((GeneProduct) e);
+					sparqlLoomWdSparqlEncodes.setElement((GeneProduct) e);
+					sparqlLoomWdSparqlCompound.setElement((GeneProduct) e);
 					sparqlLoomUpSparqlProtein.setElement((GeneProduct) e);
 					sparqlLoomUpSparqlEnzyme.setElement((GeneProduct) e);
 					sparqlLoomUpSparqlEnzymeProtein.setElement((GeneProduct) e);
@@ -260,6 +286,9 @@ public class PppPlugin implements Plugin, PathwayElementMenuHook {
 					submenu.add(wpSubmenu);
 					
 					wdSubmenu.add(sparqlLoomWdSparqlBasic);
+					wdSubmenu.add(sparqlLoomWdSparqlEncodedby);
+					wdSubmenu.add(sparqlLoomWdSparqlEncodes);
+					wdSubmenu.add(sparqlLoomWdSparqlCompound);
 					submenu.add(wdSubmenu);
 					
 					upSubmenu.add(sparqlLoomUpSparqlProtein);

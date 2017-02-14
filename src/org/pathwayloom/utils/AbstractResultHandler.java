@@ -29,4 +29,8 @@ public class AbstractResultHandler implements ResultHandler {
 	public List<PathwayElement> getBinaryResults() {
 		return null;
 	}
+	
+	public void clear(){
+		setResults.clear();
+	}
 }

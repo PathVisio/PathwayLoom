@@ -10,4 +10,6 @@ public interface ResultHandler {
 	
 	public List<PathwayElement> getBinaryResults();
 	
+	public void clear();
+	
 }
