@@ -56,7 +56,7 @@ public class ChEMBLProteinResultsHandler extends AbstractResultHandler {
 
 				String pathway = interaction.pathwayID;
 				String[] pathwaySplit = pathway.split("\t");
-				pchildElt.addComment("actType: "+pathwaySplit[0]+"; actValue: "+pathwaySplit[1], "WikiPathway");
+//				pchildElt.addComment("actType: "+pathwaySplit[0]+"; actValue: "+pathwaySplit[1], "WikiPathway");
 				pchildElt.setMWidth (targetLabel.length()*6);
 				pchildElt.setMHeight (PppPlugin.DATANODE_MHEIGHT);
 				pchildElt.addComment(interaction.getParentGraphId(), "ParentGraphId");
